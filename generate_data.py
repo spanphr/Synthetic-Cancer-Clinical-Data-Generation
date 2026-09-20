@@ -1,8 +1,8 @@
 from scipy.stats import truncnorm
 import numpy as np
 
-def generate_patient():
 
+def generate_patient():
     mean = 0.55
     sd = 0.25
     lower = 0.1
@@ -12,10 +12,7 @@ def generate_patient():
     b = (upper - mean) / sd
 
     biomarker_a = truncnorm.rvs(
-        a,
-        b,
-        loc=mean,
-        scale=sd
+        a, b, loc=mean, scale=sd
     )
 
     if biomarker_a < 0.4:
@@ -35,23 +32,36 @@ def generate_patient():
         pfs_mean = 360
         pfs_sd = 120
 
-    pfs = round(np.random.normal(
-        loc=pfs_mean,
-        scale=pfs_sd
-    ),0)
+    pfs = round(
+        np.random.normal(
+            loc=pfs_mean,
+            scale=pfs_sd
+        )
+    )
 
     return {
-    "biomarker_a": round(biomarker_a, 4),
-    "biomarker_group": biomarker_group,
-    "pfs_days": pfs
+        "biomarker_a": round(biomarker_a, 4),
+        "biomarker_group": biomarker_group,
+        "pfs_days": pfs
     }
+
 
 def generate_patients(n=1000):
     patients = []
 
     for i in range(n):
+
         patient = generate_patient()
+
+        # One patient is treated each day
+        treatment_day = i + 1
+
+        # PFS becomes available after the PFS period has elapsed
+        pfs_available_day = treatment_day + patient["pfs_days"]
+
+        patient["treatment_day"] = treatment_day
+        patient["pfs_available_day"] = pfs_available_day
+
         patients.append(patient)
 
     return patients
-

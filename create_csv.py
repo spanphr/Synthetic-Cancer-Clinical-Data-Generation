@@ -1,7 +1,6 @@
 import pandas as pd
 from generate_data import generate_patients
 
-
 patients = generate_patients(1000)
 
 df = pd.DataFrame(patients)
