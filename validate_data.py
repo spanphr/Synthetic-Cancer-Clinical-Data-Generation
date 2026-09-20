@@ -3,7 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from scipy.stats import norm
 
-df = pd.read_csv("synthetic_patients.csv")
+df = pd.read_csv("synthetic_patients_v2.csv")
 
 groups = {
     "Low": {"mean": 180, "sd": 45},
