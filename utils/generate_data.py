@@ -1,7 +1,6 @@
 from scipy.stats import truncnorm
 import numpy as np
 
-
 def generate_patient():
     mean = 0.55
     sd = 0.25
@@ -46,19 +45,24 @@ def generate_patient():
     }
 
 
-def generate_patients(n=1000):
+def generate_patients(batch_id, n=1000):
+
+    np.random.seed( 22 + batch_id)
+
     patients = []
 
     for i in range(n):
 
         patient = generate_patient()
 
-        # One patient is treated each day
+        patient_id = f"B{batch_id:03d}P{i + 1:04d}"
         treatment_day = i + 1
 
-        # PFS becomes available after the PFS period has elapsed
-        pfs_available_day = treatment_day + patient["pfs_days"]
+        pfs_available_day = (
+            treatment_day + patient["pfs_days"]
+        )
 
+        patient["patient_id"] = patient_id
         patient["treatment_day"] = treatment_day
         patient["pfs_available_day"] = pfs_available_day
 
